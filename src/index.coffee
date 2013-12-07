@@ -35,7 +35,7 @@ app.use express.cookieParser()
 app.use express.session(
   secret: 'shhh'
   store: store
-) 
+)
 
 # Set View Engine.
 app.set 'view engine', 'jade'

@@ -16,11 +16,11 @@ module.exports = (app) ->
   
 
   app.all '/private', checkAuth, (req, res, next) ->
-    routeMvc('private', 'index', req, res, next)  
+    routeMvc('private', 'index', req, res, next)
   
   #   - _/_ -> controllers/index/index method
   app.all '/', (req, res, next) ->
-    routeMvc('index', 'index', req, res, next)
+    routeMvc('gangnam', 'index', req, res, next)
 
   #   - _/**:controller**_  -> controllers/***:controller***/index method
   app.all '/:controller', (req, res, next) ->

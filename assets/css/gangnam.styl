@@ -1,5 +1,211 @@
+@import 'nib'
+global-reset()
 
-.container
-  background-color: red
-  height: 200px
+skew-angle = 15deg
+slant-offset = 120px
+title-font-size = 3.8vw
+headerHeight = 5.5
+
+* 
+  box-sizing border-box
+
+html, body
+  height 100%
+  margin 0
+
+#header
+  width 100%
+  height headerHeight * 1%
+  background-color white
+  color black
+  font-family 'Dosis', sans-serif
+  font-weight 400
+  font-size 1.2em
+  padding-left 0.8em
+
+  #header-container
+    width 30%
+    float left
+    text-align right
+    
+
+  #header-title
+    width 35%
+    float left
+    text-align left
+    cursor pointer
+
+    .capitalized
+      display inline-block
+      font-size 115%
+
+      &:not(:first-child)
+        margin-left 0.1em
+
+
+#menu-button
+  cursor pointer
+
+#home-button
+  cursor pointer
+
+
+.vertical-align-container
+  height 100%
+  width 100%
+  display table
+
+.vertical-align-content
+  display table-cell
+  vertical-align middle
+
+#title-container
+  transition opacity 0.5s linear
+  height (100 - headerHeight) * 1%
+  opacity 1
+
+  &.hidden
+    opacity 0
+
+#title
+  font-family 'Open Sans', sans-serif
+  font-size title-font-size
+  font-weight 700
+  text-align left
+  padding-left 0.6em
+  cursor pointer
+
+  .capitalized
+    display inline-block
+    font-size title-font-size + 1.5vw
+
+.subtitle
+  font-size title-font-size - 1.5vw
+  font-weight 300
+
+.slant-container
+  height 100%
+  width 100%
+
+  &.right
+    position absolute
+    .veil
+      height 100%
+      width 100%
+      position absolute
+      background-color white
+      opacity 0.6
+    video
+      height 100%
+      width 100%
+      margin-left 180px
+      position absolute
+      z-index -1
+
+  &.left
+    transform skewX(-(skew-angle))
+    background-color black
+    margin-left slant-offset
+    color white
+
+.slant
+  transition left 0.5s linear
+  margin-left -(slant-offset)
+  height 100%
+  width 50%
+  overflow hidden
+  display inline-block
+  transform skewX(skew-angle)
+
+  &.hidden
+    position relative
+    left -50%
+
+#slant-drawer
+  transition left 0.5s linear,
+    width 0.5s linear,
+    opacity 0.5s linear
+  position relative
+  left -49.7%
+  margin-left 0px
+  height (100 - headerHeight) * 1%
+  width 50%
+  overflow hidden
+  display inline-block
+  transform skewX(skew-angle)
+  opacity 1
+
+  &.hidden
+    opacity 0
+
+
+.slant-drawer-container
+  margin-left -(slant-offset)
+  height 100%
+  width 200%
+  transform skewX(-(skew-angle))
+  color white
+
+.slant-tabs
+  margin-left slant-offset
+  transform skewX(skew-angle)
+  height 100%
+  width 50%
+
+.slant-tab
+  transition left 0.4s linear
+  border 1px solid white
+  position relative
+  left 0
+  background-color grey
+  height (100/8)%
+  width 100%
+  text-align right
+  opacity 0.3
+  cursor pointer
+
+  &.hidden 
+    left -100% 
+
+  &.hovered
+    opacity 1
+    background-color black
+
+  &:not(:last-child)
+    border-bottom none
+
+  &.main
+    opacity 1
+
+  .slant-tab-container
+    transform skewX(-(skew-angle))
+    padding-right 1.3em
+    height 100%
+    width 100%
+    left 0
+    opacity 1
+    position relative
+    padding-left 10%
+
+ .slant-tab-content
+    transitionDuration = 0.3s
+    transition left transitionDuration linear,
+      opacity transitionDuration linear,
+      margin-left transitionDuration linear
+    font-family 'Open Sans', sans-serif
+    font-weight 300
+    font-size 1.2em
+    text-align right
+
+    .capitalized
+      display inline-block
+      font-size 1.5em
+
+    &.active
+      left -20px
+      margin-left 40%
+
+
+
+
 

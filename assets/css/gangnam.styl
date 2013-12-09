@@ -1,7 +1,7 @@
 @import 'nib'
 global-reset()
 
-skew-angle = 15deg
+skewAngle = 15deg
 slant-offset = 120px
 title-font-size = 3.8vw
 headerHeight = 5.5
@@ -12,6 +12,9 @@ headerHeight = 5.5
 html, body
   height 100%
   margin 0
+
+body
+  overflow-x hidden
 
 #header
   width 100%
@@ -28,7 +31,6 @@ html, body
     float left
     text-align right
     
-
   #header-title
     width 35%
     float left
@@ -42,13 +44,55 @@ html, body
       &:not(:first-child)
         margin-left 0.1em
 
+.header-button
+  transition color 0.5s linear
+  color #808080
+  cursor pointer
+
+  &:hover
+    color black
 
 #menu-button
-  cursor pointer
+  transition padding-right 0.4s linear
+  padding-right 38%
+  &.home
+    padding-right 0
 
-#home-button
-  cursor pointer
 
+#tab-content
+  transition left 0.7s ease-out,
+    top 0.7s ease-out,
+    transform 0.9s ease-out
+  transform skewX(skewAngle)
+  height 100%
+  width 80%
+  position absolute
+  top 0
+  left -57%
+  background-color black
+  text-align left
+
+  &.active
+    left 25%
+    z-index 0
+
+  &.removed
+    top 100%
+
+  & > div
+    transform skewX(-(skewAngle))
+    position absolute
+    right 0
+    width 70%
+
+  .container
+    background-color white
+    border 1px solid #505050
+    color black
+    margin-right 14%
+    height 100%
+    top 7%
+    padding 2.5% 5%
 
 .vertical-align-container
   height 100%
@@ -89,12 +133,17 @@ html, body
 
   &.right
     position absolute
-    .veil
+    #veil
+      transition opacity 0.5s linear,
+        background-color 0.5s linear
       height 100%
       width 100%
       position absolute
       background-color white
       opacity 0.6
+      &.darkened
+        background-color black
+        opacity 0.75
     video
       height 100%
       width 100%
@@ -103,19 +152,24 @@ html, body
       z-index -1
 
   &.left
-    transform skewX(-(skew-angle))
+    transform skewX(-(skewAngle))
     background-color black
     margin-left slant-offset
     color white
 
 .slant
-  transition left 0.5s linear
+  transition left 0.5s linear,
+    width 0.5s linear
   margin-left -(slant-offset)
   height 100%
-  width 50%
+  width 32%
+  min-width 500px
   overflow hidden
   display inline-block
-  transform skewX(skew-angle)
+  transform skewX(skewAngle)
+
+  &.home
+    width 50%
 
   &.hidden
     position relative
@@ -124,15 +178,17 @@ html, body
 #slant-drawer
   transition left 0.5s linear,
     width 0.5s linear,
-    opacity 0.5s linear
+    opacity 0.5s linear,
+    transform 0.9s ease-out
+
   position relative
-  left -49.7%
+  left -49.6%
   margin-left 0px
   height (100 - headerHeight) * 1%
   width 50%
   overflow hidden
   display inline-block
-  transform skewX(skew-angle)
+  transform skewX(skewAngle)
   opacity 1
 
   &.hidden
@@ -143,21 +199,24 @@ html, body
   margin-left -(slant-offset)
   height 100%
   width 200%
-  transform skewX(-(skew-angle))
+  transform skewX(-(skewAngle))
   color white
 
 .slant-tabs
   margin-left slant-offset
-  transform skewX(skew-angle)
+  transform skewX(skewAngle)
   height 100%
   width 50%
 
 .slant-tab
-  transition left 0.4s linear
+  transition left 0.5s ease-out,
+    opacity 0.5s linear,
+    border 0.5s linear,
+    background-color 0.5s linear
   border 1px solid white
   position relative
   left 0
-  background-color grey
+  background-color #505050
   height (100/8)%
   width 100%
   text-align right
@@ -174,12 +233,14 @@ html, body
   &:not(:last-child)
     border-bottom none
 
-  &.main
+  &.active
     opacity 1
+    background-color black
+    border-right 1px solid black
 
   .slant-tab-container
-    transform skewX(-(skew-angle))
-    padding-right 1.3em
+    transform skewX(-(skewAngle))
+    padding-right 1.6em
     height 100%
     width 100%
     left 0
@@ -194,12 +255,13 @@ html, body
       margin-left transitionDuration linear
     font-family 'Open Sans', sans-serif
     font-weight 300
-    font-size 1.2em
+    font-size 1.1em
+    line-height 140%
     text-align right
 
     .capitalized
       display inline-block
-      font-size 1.5em
+      font-size 1.3em
 
     &.active
       left -20px

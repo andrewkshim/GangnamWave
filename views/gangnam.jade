@@ -1,10 +1,17 @@
 extends layout
 block content
   .slant-container.right
-    .veil
+    #veil
     video(id="gangnamVideo", autoplay, loop, muted)
       source(src='gangnamStyle.mp4', type='video/mp4')
-  .slant
+    if inHomeState
+      #tab-content
+        .container 
+    else
+      #tab-content.active
+        .container.active
+          !{tabContent}
+  .slant(class=inHomeState? "home" : "")
     .slant-container.left
       #header 
         .vertical-align-container#header-title 
@@ -14,74 +21,44 @@ block content
             .capitalized W
             | AVE
         .vertical-align-container#header-container
-          .vertical-align-content#menu-button MENU
-          .vertical-align-content#home-button HOME
-          .vertical-align-content ABOUT
-      .vertical-align-container#title-container 
+          mixin headerButton(name)
+            - var buttonId = [name, 'button'].join('-')
+            - var buttonClass = inHomeState? "home" : ""
+            .vertical-align-content.header-button(id=buttonId, class=buttonClass) #{name.toUpperCase()}
+          +headerButton('menu')
+          //- +headerButton('home')
+          //- +headerButton('about')
+      .vertical-align-container#title-container(class=inHomeState? "" : "hidden")
         .vertical-align-content#title
           .capitalized G
           | ANGNAM   
           .capitalized W
           | AVE
           .subtitle AMES 471: World of Korean Cinema
-  #slant-drawer
+
+  #slant-drawer(class=inHomeState? 'hidden' : '')
+    mixin slantTab(name, contents)
+      - var hiddenClass = inHomeState? 'hidden' : ''
+      - var activeClass = (tabState === name)? 'active' : ''
+      - var tabClass = [hiddenClass, activeClass].join(' ').trim()
+      .slant-tab(data-link=name, class=tabClass)
+        .vertical-align-container.slant-tab-container
+          .vertical-align-content.slant-tab-content
+            each content in contents
+              if content.charAt(0) === '<'
+                !{content}
+              else
+                .capitalized= content.charAt(0)
+                = content.substring(1, content.length) + ' '
+
     .slant-drawer-container
       .slant-tabs
-        .slant-tab.hidden 
-          .vertical-align-container.slant-tab-container
-            .vertical-align-content.slant-tab-content
-              .capitalized I
-              | NTRODUCTION
-        .slant-tab.hidden 
-          .vertical-align-container.slant-tab-container
-            .vertical-align-content.slant-tab-content
-              .capitalized W
-              | HO IS 
-              .capitalized P
-              | SY
-        .slant-tab.hidden 
-          .vertical-align-container.slant-tab-container
-            .vertical-align-content.slant-tab-content
-              .capitalized M
-              | ASCULINITY IN 
-              .capitalized K
-              | OREAN 
-              .capitalized P
-              | OP 
-              .capitalized C
-              | ULTURE
-        .slant-tab.hidden 
-          .vertical-align-container.slant-tab-container
-            .vertical-align-content.slant-tab-content 
-              .capitalized P
-              | SY AND 
-              .capitalized M
-              | ASCULINITY
-        .slant-tab.hidden 
-          .vertical-align-container.slant-tab-container
-            .vertical-align-content.slant-tab-content
-              .capitalized G
-              | ANGNAM 
-              .capitalized G
-              | OES 
-              .capitalized V
-              | IRAL 
-        .slant-tab.hidden 
-          .vertical-align-container.slant-tab-container
-            .vertical-align-content.slant-tab-content
-              .capitalized C
-              | ONSEQUENCES OF 
-              .capitalized V
-              | IRALITY
-        .slant-tab.hidden 
-          .vertical-align-container.slant-tab-container
-            .vertical-align-content.slant-tab-content
-              .capitalized D
-              | ISCUSSION
-        .slant-tab.hidden 
-          .vertical-align-container.slant-tab-container
-            .vertical-align-content.slant-tab-content
-              .capitalized C
-              | ONCLUSION
-
+        +slantTab('introduction', ['INTRODUCTION'])
+        +slantTab('whoIsPsy', ['WHO IS', 'PSY'])
+        +slantTab('masculinity', ['MASCULINITY IN', '<br>', 'KOREAN', 'POP', 'CULTURE'])
+        +slantTab('psyMasculinity', ['PSY AND', 'MASCULINITY'])
+        +slantTab('viral', ['GANGNAM', 'GOES', 'VIRAL'])
+        +slantTab('consequences', ['CONSEQUENCES OF', 'VIRALITY'])
+        +slantTab('discussion', ['DISCUSSION'])
+        +slantTab('conclusion', ['CONCLUSION'])
  

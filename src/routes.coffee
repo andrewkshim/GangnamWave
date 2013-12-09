@@ -22,6 +22,12 @@ module.exports = (app) ->
   app.all '/', (req, res, next) ->
     routeMvc('gangnam', 'index', req, res, next)
 
+  app.get '/introduction', (req, res, next) ->
+    routeMvc('gangnam', 'introduction', req, res, next)
+
+  app.get '/tab/:name', (req, res, next) ->
+    routeMvc('gangnam', 'tab', req, res, next)
+
   #   - _/**:controller**_  -> controllers/***:controller***/index method
   app.all '/:controller', (req, res, next) ->
     routeMvc(req.params.controller, 'index', req, res, next)

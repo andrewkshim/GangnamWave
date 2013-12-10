@@ -19,11 +19,10 @@ $ ->
     $(slantTabSelector).height(slantTabHeight)
 
   init = ->
-    skroll.refresh()
     #setTabContentHeight()
     #setSlantTabHeight()
-
-  init()
+    console.log 'init'
+    #init()
 
   isTabContentActive = ->
     return $(tabContentSelector).hasClass('active')
@@ -51,36 +50,36 @@ $ ->
       video.play()
 
   createTabContentElement = ->
-    $('.slant-container.right').append($('<div>', {
+    rightSlantContainer = $('.slant-container.right')
+    rightSlantContainer.append($('<div>', {
       id: 'tab-content'
       'data-0': 'background-color:rgb(0,0,0);'
       'data-10p': 'background-color:rgb(255,255,255);'
     }))
-    $(tabContentSelector).append($('<div>', {
+    tabContentElement = $(tabContentSelector)
+    tabContentElement.append($('<div>', {
       class: 'container'
       'data-0': 'color:rgb(255,255,255);'
       'data-10p': 'color:rgb(0,0,0);'
     }))
-    skroll.refresh()
+    return tabContentElement
 
   isTabTransitioning = false
 
   activateTabContentFromTab = (tabElement) ->
     console.log 'from tab'
     playVideo()
-    $(tabContentSelector).remove()
-    createTabContentElement()
     setTimeout( ->
       activateTabContentFromHome(tabElement)
     , 700)
 
   activateTabContentFromHome = (tabElement) ->
     console.log 'from home'
-    tabContentElement = $(tabContentSelector)
+    $(tabContentSelector).remove()
+    tabContentElement = createTabContentElement()
+    tabContentElement.addClass('active', 700, 'linear')
     tabContentBody = tabContentElement.children('.container')
-    tabElement.addClass('active', 500, 'linear')
-    tabContentElement.addClass('active')
-    setTabContentHeight()
+    #setTabContentHeight()
     href = tabElement.data('link')
     $.get("/tab/#{href}", (data) ->
       history.pushState({}, 'Introduction', href)
@@ -89,6 +88,7 @@ $ ->
     setTimeout( ->
       pauseVideo()
       isTabTransitioning = false
+      skroll.refresh()
     , 700)
 
   hideTabContent = (callback) ->
@@ -98,39 +98,61 @@ $ ->
     playVideo()
     callback()
 
-  clearSlantTabs = (fromTabCallback, fromHomeCallback) ->
+  clearActiveSlantTab = ->
+    activeSlantTab = $("#{slantTabSelector}.active")
+      .removeClass('active skrollable skrollable-between')
+      .removeAttr('style')
+      .removeAttr('data-0')
+      .removeAttr('data-10p')
+      .find(slantTabContentSelector)
+      .removeAttr('style')
+      .removeAttr('data-0')
+      .removeAttr('data-10p')
+      .removeClass('skrollable skrollable-between')
+
+  clearSlantTabs = (isFromTabState, fromTabCallback, fromHomeCallback) ->
     slantTabs = $(slantTabSelector)
-    if slantTabs.hasClass('active')
+    if isFromTabState
       playVideo()
-      slantTabs.removeAttr('style')
-      setSlantTabHeight()
-      slantTabs.removeClass('active')
-        .children(slantTabContentSelector)
-        .removeAttr('style')
-      $('#tab-content').addClass('removed')
+      #setSlantTabHeight()
+      tabContentElement = $(tabContentSelector)
+      tabContentElement.addClass('removed')
       setTimeout( ->
+        window.scrollTo(0,0)
         fromTabCallback()
       , 700)
     else
       fromHomeCallback()
 
-  $(slantTabSelector).click( (event) ->
-    if isTabTransitioning
-      return false
-    isTabTransitioning = true
-    tabElement = $(this)
-    if tabElement.hasClass('active')
-      return false
-    clearSlantTabs( ->
-      activateTabContentFromTab(tabElement)
-    , ->
-      activateTabContentFromHome(tabElement)
+  slantTabClick = ->
+    $(slantTabSelector).click( (event) ->
+      if isTabTransitioning
+        return false
+      tabElement = $(this)
+      if tabElement.hasClass('active')
+        return false
+      isFromTabState = $(slantTabSelector).hasClass('active')
+      isTabTransitioning = true
+      if isFromTabState
+        clearActiveSlantTab()
+      tabElement
+        .attr('data-0', 'background-color:rgb(0,0,0);')
+        .attr('data-10p', 'background-color:rgb(255,255,255);')
+        .addClass('active')
+        .find('.slant-tab-content')
+        .attr('data-0', 'color:rgb(255,255,255);')
+        .attr('data-10p', 'color:rgb(0,0,0);')
+      clearSlantTabs(isFromTabState, ->
+        activateTabContentFromTab(tabElement)
+      , ->
+        activateTabContentFromHome(tabElement)
+      )
+    ).hover( (event) ->
+      $(this).addClass('hovered', 450, 'linear')
+    , (event) ->
+      $(this).removeClass('hovered', 450, 'linear')
     )
-  ).hover( (event) ->
-    $(this).addClass('hovered', 500, 'linear')
-  , (event) ->
-    $(this).removeClass('hovered', 500, 'linear')
-  )
+  slantTabClick()
 
   hideSlantTabs = ->
     timeElapsed = 200
@@ -197,6 +219,7 @@ $ ->
     )
     .blur( (event) ->
       pauseVideo()
+      $(slantTabSelector).removeClass('hovered', 450, 'linear')
     )
 
 

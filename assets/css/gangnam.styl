@@ -61,37 +61,37 @@ body
 
 
 #tab-content
-  transition left 0.7s ease-out,
-    top 0.7s ease-out,
-    transform 0.9s ease-out
+  transition left 0.7s linear,
+    top 0.6s linear,
+    transform 0.9s ease-out,
+    z-index 0.7s linear,
+    opacity 0.5s linear
   transform skewX(skewAngle)
-  height 100%
-  width 100%
-  position absolute
+  width 200%
+  position relative
   top 0
-  left -75%
+  left -200%
   background-color black
   text-align left
+  opacity 1
   //overflow-y scroll
 
   &.active
-    left 20%
+    left 10%
     z-index 0
 
   &.removed
-    top 100%
-
-  & > div
-    transform skewX(-(skewAngle))
-    position absolute
-    right 0
-    width 60%
+    opacity 0
+    //top 100%
 
   .container
     //background-color black
     //border 1px solid #505050
+    transform skewX(-(skewAngle))
+    position relative
+    left 12%
+    width 33%
     color white
-    margin-right 22%
     height 93%
     top 7%
     padding 2.5% 5%
@@ -152,7 +152,7 @@ body
       height 100%
       width 100%
       margin-left 180px
-      position absolute
+      position fixed
       z-index -1
       box-shadow inset 0 0 10px black 
 
@@ -167,7 +167,7 @@ body
     width 0.5s linear
   margin-left -(slant-offset)
   height 100%
-  width 32%
+  width 25%
   min-width 500px
   overflow hidden
   display inline-block

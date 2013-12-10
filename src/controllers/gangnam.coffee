@@ -21,11 +21,8 @@ renderTabView = (res, name) ->
         })
     )
 
-exports.introduction = (req, res) ->
-    renderTabView(res, 'introduction')
-
-exports.masculinity = (req, res) ->
-    renderTabView(res, 'masculinity')
+exports.section = (req, res) ->
+  renderTabView(res, req.params.section)
 
 exports.tab = (req, res) ->
     name = req.params.name

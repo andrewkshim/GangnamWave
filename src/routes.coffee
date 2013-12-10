@@ -25,26 +25,8 @@ module.exports = (app) ->
   app.get '/tab/:name', (req, res, next) ->
     routeMvc('gangnam', 'tab', req, res, next)
 
-  app.get '/introduction', (req, res, next) ->
-    routeMvc('gangnam', 'introduction', req, res, next)
-
-  app.get '/masculinity', (req, res, next) ->
-    routeMvc('gangnam', 'masculinity', req, res, next)
-
-
-
-
-  #   - _/**:controller**_  -> controllers/***:controller***/index method
-  app.all '/:controller', (req, res, next) ->
-    routeMvc(req.params.controller, 'index', req, res, next)
-
-  #   - _/**:controller**/**:method**_ -> controllers/***:controller***/***:method*** method
-  app.all '/:controller/:method', (req, res, next) ->
-    routeMvc(req.params.controller, req.params.method, req, res, next)
-
-  #   - _/**:controller**/**:method**/**:id**_ -> controllers/***:controller***/***:method*** method with ***:id*** param passed
-  app.all '/:controller/:method/:id', (req, res, next) ->
-    routeMvc(req.params.controller, req.params.method, req, res, next)
+  app.get '/:section', (req, res, next) ->
+    routeMvc('gangnam', 'section', req, res, next)
 
   # If all else failed, show 404 page
   app.all '/*', (req, res) ->

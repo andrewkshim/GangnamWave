@@ -8,18 +8,24 @@ exports.index = (req, res) ->
       tabContent: ''
     })
 
-exports.introduction = (req, res) ->
-    fs.readFile('views/tabs/introduction.jade', 'utf8', (err, data) ->
+renderTabView = (res, name) ->
+    fs.readFile("views/tabs/#{name}.jade", 'utf8', (err, data) ->
         if (err)
           console.log(err)
         html = jade.compile(data)({})
         res.render('gangnam', {
           inHomeState: false
-          tabState: 'introduction'
+          tabState: name
           tabContent: html
           layout: false
         })
     )
+
+exports.introduction = (req, res) ->
+    renderTabView(res, 'introduction')
+
+exports.masculinity = (req, res) ->
+    renderTabView(res, 'masculinity')
 
 exports.tab = (req, res) ->
     name = req.params.name

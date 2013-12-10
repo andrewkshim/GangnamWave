@@ -2,16 +2,17 @@ extends layout
 block content
   .slant-container.right
     #veil
-    video(id="gangnamVideo", autoplay, loop, muted)
+    - var doAutoplay = inHomeState? true : false
+    video(id="gangnamVideo", autoplay=doAutoplay, loop, muted)
       source(src='gangnamStyle.mp4', type='video/mp4')
     if inHomeState
       #tab-content
         .container 
     else
-      #tab-content.active
-        .container.active
+      #tab-content(data-0='background-color:rgb(0,0,0);', data-10p='background-color:rgb(255,255,255);').active
+        .container(data-0='color:rgb(255,255,255);', data-10p='color:rgb(0,0,0);').active
           !{tabContent}
-  .slant(class=inHomeState? "home" : "")
+  #slant(class=inHomeState? "home" : "")
     .slant-container.left
       #header 
         .vertical-align-container#header-title 
@@ -35,23 +36,7 @@ block content
           .capitalized W
           | AVE
           .subtitle AMES 471: World of Korean Cinema
-
-  #slant-drawer(class=inHomeState? 'hidden' : '')
-    mixin slantTab(name, contents)
-      - var hiddenClass = inHomeState? 'hidden' : ''
-      - var activeClass = (tabState === name)? 'active' : ''
-      - var tabClass = [hiddenClass, activeClass].join(' ').trim()
-      .slant-tab(data-link=name, class=tabClass)
-        .vertical-align-container.slant-tab-container
-          .vertical-align-content.slant-tab-content
-            each content in contents
-              if content.charAt(0) === '<'
-                !{content}
-              else
-                .capitalized= content.charAt(0)
-                = content.substring(1, content.length) + ' '
-
-    .slant-drawer-container
+    .slant-drawer-container(class=inHomeState? 'hidden' : '')
       .slant-tabs
         +slantTab('introduction', ['INTRODUCTION'])
         +slantTab('whoIsPsy', ['WHO IS', 'PSY'])
@@ -62,3 +47,30 @@ block content
         +slantTab('discussion', ['DISCUSSION'])
         +slantTab('conclusion', ['CONCLUSION'])
  
+
+mixin slantTab(name, contents)
+  - var hiddenClass = inHomeState? 'hidden' : ''
+  - var activeClass = (tabState === name)? 'active' : ''
+  - var tabClass = [hiddenClass, activeClass].join(' ').trim()
+  if tabState === name
+    .slant-tab(data-link=name, data-0='background-color:rgb(0,0,0);', data-10p='background-color:rgb(255,255,255);', class=tabClass)
+      .vertical-align-container.slant-tab-container
+        .vertical-align-content.slant-tab-content(data-0='color:rgb(255,255,255);', data-10p='color:rgb(0,0,0);')
+          each content in contents
+            if content.charAt(0) === '<'
+              !{content}
+            else
+              .capitalized= content.charAt(0)
+              = content.substring(1, content.length) + ' '
+  else
+    .slant-tab(data-link=name, class=tabClass)
+      .vertical-align-container.slant-tab-container
+        .vertical-align-content.slant-tab-content
+          each content in contents
+            if content.charAt(0) === '<'
+              !{content}
+            else
+              .capitalized= content.charAt(0)
+              = content.substring(1, content.length) + ' '
+
+

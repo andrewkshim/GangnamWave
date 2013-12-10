@@ -15,6 +15,7 @@ html, body
 
 body
   overflow-x hidden
+  overflow-y scroll
 
 #header
   width 100%
@@ -56,7 +57,7 @@ body
   transition padding-right 0.4s linear
   padding-right 38%
   &.home
-    padding-right 0
+    padding-right 8%
 
 
 #tab-content
@@ -65,15 +66,16 @@ body
     transform 0.9s ease-out
   transform skewX(skewAngle)
   height 100%
-  width 80%
+  width 100%
   position absolute
   top 0
-  left -57%
+  left -75%
   background-color black
   text-align left
+  //overflow-y scroll
 
   &.active
-    left 25%
+    left 20%
     z-index 0
 
   &.removed
@@ -83,14 +85,14 @@ body
     transform skewX(-(skewAngle))
     position absolute
     right 0
-    width 70%
+    width 60%
 
   .container
-    background-color white
-    border 1px solid #505050
-    color black
-    margin-right 14%
-    height 100%
+    //background-color black
+    //border 1px solid #505050
+    color white
+    margin-right 22%
+    height 93%
     top 7%
     padding 2.5% 5%
 
@@ -107,6 +109,7 @@ body
   transition opacity 0.5s linear
   height (100 - headerHeight) * 1%
   opacity 1
+  width 200%
 
   &.hidden
     opacity 0
@@ -144,12 +147,14 @@ body
       &.darkened
         background-color black
         opacity 0.75
+
     video
       height 100%
       width 100%
       margin-left 180px
       position absolute
       z-index -1
+      box-shadow inset 0 0 10px black 
 
   &.left
     transform skewX(-(skewAngle))
@@ -157,7 +162,7 @@ body
     margin-left slant-offset
     color white
 
-.slant
+#slant
   transition left 0.5s linear,
     width 0.5s linear
   margin-left -(slant-offset)
@@ -166,6 +171,7 @@ body
   min-width 500px
   overflow hidden
   display inline-block
+  position fixed
   transform skewX(skewAngle)
 
   &.home
@@ -196,11 +202,13 @@ body
 
 
 .slant-drawer-container
-  margin-left -(slant-offset)
-  height 100%
+  margin-left -118px
+  height 94.5%
   width 200%
   transform skewX(-(skewAngle))
   color white
+  position absolute
+  top 5.5%
 
 .slant-tabs
   margin-left slant-offset
@@ -209,11 +217,8 @@ body
   width 50%
 
 .slant-tab
-  transition left 0.5s ease-out,
-    opacity 0.5s linear,
-    border 0.5s linear,
-    background-color 0.5s linear
-  border 1px solid white
+  transition left 0.5s ease-out
+  //border 1px solid white
   position relative
   left 0
   background-color #505050
@@ -231,7 +236,7 @@ body
     background-color black
 
   &:not(:last-child)
-    border-bottom none
+    //border-bottom none
 
   &.active
     opacity 1
@@ -266,8 +271,6 @@ body
     &.active
       left -20px
       margin-left 40%
-
-
 
 
 

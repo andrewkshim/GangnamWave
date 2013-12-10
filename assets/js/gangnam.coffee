@@ -1,12 +1,32 @@
 $ ->
-
   slantTabSelector = '.slant-tab'
   hiddenSlantTabSelector = "#{slantTabSelector}.hidden"
   slantTabContainerSelector = "#{slantTabSelector}-container"
   slantTabContentSelector = "#{slantTabSelector}-content"
   titleContainerSelector = '#title-container'
-  slantDrawerSelector = '#slant-drawer'
   tabContentSelector = '#tab-content'
+  slantSelector = '#slant'
+
+  skroll = skrollr.init()
+
+  setTabContentHeight = ->
+    bodyHeight = $('body').height()
+    $(tabContentSelector).height(bodyHeight)
+      .children('.container').height(bodyHeight)
+
+  setSlantTabHeight = ->
+    slantTabHeight = $(slantTabSelector).height()
+    $(slantTabSelector).height(slantTabHeight)
+
+  init = ->
+    skroll.refresh()
+    #setTabContentHeight()
+    #setSlantTabHeight()
+
+  init()
+
+  isTabContentActive = ->
+    return $(tabContentSelector).hasClass('active')
 
   unless Modernizr.history
     alert """
@@ -20,25 +40,36 @@ $ ->
 
   pauseVideo = ->
     video = document.getElementById('gangnamVideo')
-    $('#veil').addClass('darkened')
     unless video.paused
+      $('#veil').addClass('darkened')
       video.pause()
 
   playVideo = ->
     video = document.getElementById('gangnamVideo')
-    $('#veil').removeClass('darkened')
     if video.paused
+      $('#veil').removeClass('darkened')
       video.play()
 
-  createTabContentElement = (headerContent) ->
-    $('.slant-container.right').append($('<div>', { id: 'tab-content' }))
-    $(tabContentSelector).append($('<div>', { class: 'container' }))
+  createTabContentElement = ->
+    $('.slant-container.right').append($('<div>', {
+      id: 'tab-content'
+      'data-0': 'background-color:rgb(0,0,0);'
+      'data-10p': 'background-color:rgb(255,255,255);'
+    }))
+    $(tabContentSelector).append($('<div>', {
+      class: 'container'
+      'data-0': 'color:rgb(255,255,255);'
+      'data-10p': 'color:rgb(0,0,0);'
+    }))
+    skroll.refresh()
+
+  isTabTransitioning = false
 
   activateTabContentFromTab = (tabElement) ->
     console.log 'from tab'
     playVideo()
     $(tabContentSelector).remove()
-    createTabContentElement(tabElement.data('header'))
+    createTabContentElement()
     setTimeout( ->
       activateTabContentFromHome(tabElement)
     , 700)
@@ -47,8 +78,9 @@ $ ->
     console.log 'from home'
     tabContentElement = $(tabContentSelector)
     tabContentBody = tabContentElement.children('.container')
-    tabElement.addClass('active')
+    tabElement.addClass('active', 500, 'linear')
     tabContentElement.addClass('active')
+    setTabContentHeight()
     href = tabElement.data('link')
     $.get("/tab/#{href}", (data) ->
       history.pushState({}, 'Introduction', href)
@@ -56,8 +88,8 @@ $ ->
     )
     setTimeout( ->
       pauseVideo()
-    , 700
-    )
+      isTabTransitioning = false
+    , 700)
 
   hideTabContent = (callback) ->
     tabContentElement = $('#tab-content')
@@ -70,7 +102,11 @@ $ ->
     slantTabs = $(slantTabSelector)
     if slantTabs.hasClass('active')
       playVideo()
+      slantTabs.removeAttr('style')
+      setSlantTabHeight()
       slantTabs.removeClass('active')
+        .children(slantTabContentSelector)
+        .removeAttr('style')
       $('#tab-content').addClass('removed')
       setTimeout( ->
         fromTabCallback()
@@ -79,6 +115,9 @@ $ ->
       fromHomeCallback()
 
   $(slantTabSelector).click( (event) ->
+    if isTabTransitioning
+      return false
+    isTabTransitioning = true
     tabElement = $(this)
     if tabElement.hasClass('active')
       return false
@@ -88,9 +127,9 @@ $ ->
       activateTabContentFromHome(tabElement)
     )
   ).hover( (event) ->
-    $(this).addClass('hovered')
+    $(this).addClass('hovered', 500, 'linear')
   , (event) ->
-    $(this).removeClass('hovered')
+    $(this).removeClass('hovered', 500, 'linear')
   )
 
   hideSlantTabs = ->
@@ -101,10 +140,10 @@ $ ->
       , 100 * (index+1))
       timeElapsed += 100
     )
-    $('.slant').addClass('home')
+    $(slantSelector).addClass('home')
     $('#menu-button').addClass('home')
     setTimeout( ->
-      $(slantDrawerSelector).addClass('hidden')
+      console.log('hello')
     , timeElapsed/2)
     setTimeout( ->
       $(titleContainerSelector).removeClass('hidden')
@@ -117,8 +156,7 @@ $ ->
       , 100 * (index+1))
     )
     $(titleContainerSelector).addClass('hidden')
-    $(slantDrawerSelector).removeClass('hidden')
-    slantElement = $('.slant')
+    slantElement = $(slantSelector)
     slantElement.removeClass('home')
     $('#menu-button').removeClass('home')
 
@@ -154,7 +192,8 @@ $ ->
 
   $(window)
     .focus( (event) ->
-      playVideo()
+      unless isTabContentActive()
+        playVideo()
     )
     .blur( (event) ->
       pauseVideo()

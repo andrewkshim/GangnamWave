@@ -1,7 +1,8 @@
 extends layout
 block content
   .slant-container.right
-    #veil
+    - var veilClass = inHomeState? "" : "covered"
+    #veil(class=veilClass)
     - var doAutoplay = inHomeState? true : false
     video(id="gangnamVideo", autoplay=doAutoplay, loop, muted)
       source(src='gangnamStyle.mp4', type='video/mp4')

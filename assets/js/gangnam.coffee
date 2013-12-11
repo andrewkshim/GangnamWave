@@ -7,7 +7,7 @@ $ ->
   tabContentSelector = '#tab-content'
   slantSelector = '#slant'
 
-  skroll = skrollr.init() 
+  skroll = skrollr.init()
 
   setTabContentHeight = ->
     bodyHeight = $('body').height()
@@ -85,6 +85,8 @@ $ ->
       history.pushState({}, 'Introduction', href)
       tabContentBody.html(data)
       setPsyAge()
+      listenNinjaHover()
+      $('#veil').addClass('covered')
     )
     setTimeout( ->
       pauseVideo()
@@ -117,6 +119,7 @@ $ ->
       playVideo()
       #setSlantTabHeight()
       tabContentElement = $(tabContentSelector)
+      $('#veil').addClass('covered')
       tabContentElement.addClass('removed')
       setTimeout( ->
         window.scrollTo(0,0)
@@ -242,4 +245,55 @@ $ ->
       $('.psy-age').html(getPsyAge())
 
   setPsyAge()
+
+  isCoincidental = false
+  doAnimation = ->
+    if isCoincidental
+      return
+    isCoincidental = true
+    setTimeout( ->
+      $('.coincidentally').addClass('active')
+    , 1000)
+    setTimeout( ->
+      $('.coincidentally').removeClass('active')
+      isCoincidental = false
+      $('.ninja-image > .curtain').removeClass('hovered')
+    , 4000)
+
+  listenNinjaHover = ->
+    ninjaAssassinSelector = '#ninjaAssassin'
+    stormShadowSelector = '#stormShadow'
+    ninjaAssassin = $(ninjaAssassinSelector)
+    stormShadowCurtain = ninjaAssassin.children('.curtain')
+    stormShadow = $(stormShadowSelector)
+    ninjaAssassinCurtain = stormShadow.children('.curtain')
+
+    if (not ninjaAssassin.length or not stormShadow.length)
+      return
+    ninjaAssassin.hover( ->
+      if isCoincidental
+        return false
+      ninjaAssassinCurtain.addClass('active')
+      ninjaAssassinCurtain.addClass('hovered')
+    , ->
+      if isCoincidental
+        return false
+      ninjaAssassinCurtain.removeClass('active')
+      if stormShadowCurtain.hasClass('hovered')
+        doAnimation()
+    )
+    stormShadow.hover( ->
+      if isCoincidental
+        return false
+      stormShadowCurtain.addClass('active')
+      stormShadowCurtain.addClass('hovered')
+    , ->
+      if isCoincidental
+        return false
+      stormShadowCurtain.removeClass('active')
+      if ninjaAssassinCurtain.hasClass('hovered')
+        doAnimation()
+    )
+
+  listenNinjaHover()
 

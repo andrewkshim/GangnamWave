@@ -170,7 +170,7 @@ $ ->
       timeElapsed += 100
     )
     $(slantSelector).addClass('home')
-    $('#menu-button').addClass('home')
+    #$('#menu-button').addClass('home')
     setTimeout( ->
       console.log('hello')
     , timeElapsed/2)
@@ -187,7 +187,7 @@ $ ->
     $(titleContainerSelector).addClass('hidden')
     slantElement = $(slantSelector)
     slantElement.removeClass('home')
-    $('#menu-button').removeClass('home')
+    #$('#menu-button').removeClass('home')
 
   toggleSlantTabs = ->
     if ($(hiddenSlantTabSelector).length)

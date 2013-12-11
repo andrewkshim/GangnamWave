@@ -84,6 +84,7 @@ $ ->
     $.get("/tab/#{href}", (data) ->
       history.pushState({}, 'Introduction', href)
       tabContentBody.html(data)
+      setPsyAge()
     )
     setTimeout( ->
       pauseVideo()
@@ -225,4 +226,20 @@ $ ->
   $('.slant-container.right').scroll( (event) ->
     console.log skroll.getScrollTop()
   )
+
+  getPsyAge = ->
+    birthday = new Date(77, 11, 31)
+    today = new Date()
+    age = today.getYear() - birthday.getYear()
+    if today.getMonth() < birthday.getMonth()
+      age -= 1
+    else if today.getMonth() is birthday.getMonth() and today.getDay() < birthday.getDay()
+      age -= 1
+    return age
+
+  setPsyAge = ->
+    if ($('.psy-age').length)
+      $('.psy-age').html(getPsyAge())
+
+  setPsyAge()
 

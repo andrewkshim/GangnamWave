@@ -1,7 +1,6 @@
 express = require 'express'
 stylus = require 'stylus'
 assets = require 'connect-assets'
-mongoose = require 'mongoose'
 
 #### Basic application initialization
 # Create app instance.
@@ -18,11 +17,6 @@ app.configure 'production', 'development', 'testing', ->
   config.setEnvironment app.settings.env
 
 # db_config = "mongodb://#{config.DB_USER}:#{config.DB_PASS}@#{config.DB_HOST}:#{config.DB_PORT}/#{config.DB_NAME}"
-# mongoose.connect db_config
-if app.settings.env != 'production'
-  mongoose.connect 'mongodb://localhost/example'
-else
-  console.log('If you are running in production, you may want to modify the mongoose connect path')
 
 #### View initialization 
 # Add Connect Assets.

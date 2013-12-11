@@ -7,7 +7,7 @@ $ ->
   tabContentSelector = '#tab-content'
   slantSelector = '#slant'
 
-  skroll = skrollr.init()
+  skroll = skrollr.init() 
 
   setTabContentHeight = ->
     bodyHeight = $('body').height()
@@ -222,4 +222,7 @@ $ ->
       $(slantTabSelector).removeClass('hovered', 450, 'linear')
     )
 
+  $('.slant-container.right').scroll( (event) ->
+    console.log skroll.getScrollTop()
+  )
 

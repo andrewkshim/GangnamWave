@@ -144,6 +144,7 @@ li
 .slant-container
   height 100%
   width 100%
+  overflow-x hidden
 
   &.right
     position absolute
@@ -286,5 +287,26 @@ li
 .psy-age
   display inline-block
 
-#timeline
-  width 120% 
+a 
+  color #DCDCDC
+
+  &:visited
+    color #DCDCDC
+
+  &:hover
+    color white
+
+.citation
+  vertical-align super
+  font-size smaller
+  display inline-block
+
+  &:before
+    content '['
+
+  &:after
+    content ']'
+
+  a
+    text-decoration none
+

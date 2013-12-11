@@ -297,3 +297,8 @@ $ ->
 
   listenNinjaHover()
 
+  window.onpopstate = (event) ->
+    console.log(history.length)
+
+
+

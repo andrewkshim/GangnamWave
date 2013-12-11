@@ -1,7 +1,7 @@
 extends layout
 block content
   .slant-container.right
-    - var veilClass = inHomeState? "" : "covered"
+    - var veilClass = inHomeState? '' : 'covered'
     #veil(class=veilClass)
     - var doAutoplay = inHomeState? true : false
     video(id="gangnamVideo", autoplay=doAutoplay, loop, muted)
@@ -16,12 +16,13 @@ block content
   #slant(class=inHomeState? "home" : "")
     .slant-container.left
       #header 
-        .vertical-align-container#header-title 
-          .vertical-align-content
-            .capitalized G
-            | ANGNAM
-            .capitalized W
-            | AVE
+        a(href='/')
+          .vertical-align-container#header-title 
+            .vertical-align-content
+              .capitalized G
+              | ANGNAM
+              .capitalized W
+              | AVE
         .vertical-align-container#header-container
           mixin headerButton(name)
             - var buttonId = [name, 'button'].join('-')
@@ -53,25 +54,28 @@ mixin slantTab(name, contents)
   - var hiddenClass = inHomeState? 'hidden' : ''
   - var activeClass = (tabState === name)? 'active' : ''
   - var tabClass = [hiddenClass, activeClass].join(' ').trim()
+  - var link = '/' + name
   if tabState === name
-    .slant-tab(data-link=name, data-0='background-color:rgb(0,0,0);', data-10p='background-color:rgb(255,255,255);', class=tabClass)
-      .vertical-align-container.slant-tab-container
-        .vertical-align-content.slant-tab-content(data-0='color:rgb(255,255,255);', data-10p='color:rgb(0,0,0);')
-          each content in contents
-            if content.charAt(0) === '<'
-              !{content}
-            else
-              .capitalized= content.charAt(0)
-              = content.substring(1, content.length) + ' '
+    a.slant-link(href=link)
+      .slant-tab(data-link=name, data-0='background-color:rgb(0,0,0);', data-10p='background-color:rgb(255,255,255);', class=tabClass)
+        .vertical-align-container.slant-tab-container
+          .vertical-align-content.slant-tab-content(data-0='color:rgb(255,255,255);', data-10p='color:rgb(0,0,0);')
+            each content in contents
+              if content.charAt(0) === '<'
+                !{content}
+              else
+                .capitalized= content.charAt(0)
+                = content.substring(1, content.length) + ' '
   else
-    .slant-tab(data-link=name, class=tabClass)
-      .vertical-align-container.slant-tab-container
-        .vertical-align-content.slant-tab-content
-          each content in contents
-            if content.charAt(0) === '<'
-              !{content}
-            else
-              .capitalized= content.charAt(0)
-              = content.substring(1, content.length) + ' '
+    a.slant-link(href=link)
+      .slant-tab(data-link=name, class=tabClass)
+        .vertical-align-container.slant-tab-container
+          .vertical-align-content.slant-tab-content
+            each content in contents
+              if content.charAt(0) === '<'
+                !{content}
+              else
+                .capitalized= content.charAt(0)
+                = content.substring(1, content.length) + ' '
 
 

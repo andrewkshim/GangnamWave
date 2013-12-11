@@ -7,7 +7,7 @@ $ ->
   tabContentSelector = '#tab-content'
   slantSelector = '#slant'
 
-  skroll = skrollr.init()
+  #skroll = skrollr.init()
 
   setTabContentHeight = ->
     bodyHeight = $('body').height()
@@ -82,16 +82,17 @@ $ ->
     #setTabContentHeight()
     href = tabElement.data('link')
     $.get("/tab/#{href}", (data) ->
-      history.pushState({}, 'Introduction', href)
+      history.pushState({}, '', href)
       tabContentBody.html(data)
       setPsyAge()
       listenNinjaHover()
-      $('#veil').addClass('covered')
+      #$('#veil').addClass('covered')
     )
     setTimeout( ->
       pauseVideo()
       isTabTransitioning = false
-      skroll.refresh()
+      #skroll.refresh()
+      location.reload()
     , 700)
 
   hideTabContent = (callback) ->
@@ -119,7 +120,7 @@ $ ->
       playVideo()
       #setSlantTabHeight()
       tabContentElement = $(tabContentSelector)
-      $('#veil').addClass('covered')
+      #$('#veil').addClass('covered')
       tabContentElement.addClass('removed')
       setTimeout( ->
         window.scrollTo(0,0)
@@ -151,12 +152,14 @@ $ ->
       , ->
         activateTabContentFromHome(tabElement)
       )
-    ).hover( (event) ->
-      $(this).addClass('hovered', 450, 'linear')
-    , (event) ->
-      $(this).removeClass('hovered', 450, 'linear')
     )
-  slantTabClick()
+         #slantTabClick()
+
+  $('a > .slant-tab').hover( (event) ->
+    $(this).addClass('hovered', 450, 'linear')
+  , (event) ->
+    $(this).removeClass('hovered', 450, 'linear')
+  )
 
   hideSlantTabs = ->
     timeElapsed = 200
@@ -204,17 +207,17 @@ $ ->
       )
   )
 
-  $('#header-title').click( (event) ->
-    if $(tabContentSelector).hasClass('active')
-      hideTabContent( ->
-        setTimeout( ->
-          hideSlantTabs()
-          history.pushState({}, 'Gangnam Wave', '/')
-        , 200)
-      )
-    else
-      hideSlantTabs()
-  )
+#  $('#header-title').click( (event) ->
+    #if $(tabContentSelector).hasClass('active')
+      #hideTabContent( ->
+        #setTimeout( ->
+          #hideSlantTabs()
+          #history.pushState({}, 'Gangnam Wave', '/')
+        #, 200)
+      #)
+    #else
+      #hideSlantTabs()
+  #)
 
   $(window)
     .focus( (event) ->
@@ -227,7 +230,7 @@ $ ->
     )
 
   $('.slant-container.right').scroll( (event) ->
-    console.log skroll.getScrollTop()
+    #console.log skroll.getScrollTop()
   )
 
   getPsyAge = ->
@@ -299,6 +302,5 @@ $ ->
 
   window.onpopstate = (event) ->
     console.log(history.length)
-
 
 

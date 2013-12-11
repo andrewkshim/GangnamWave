@@ -38,6 +38,16 @@ li
   font-size 1.2em
   padding-left 0.8em
 
+  & > a 
+    transition color 0.5s linear
+    color black
+
+    &:visited
+      color black
+
+    &:hover
+      color #808080
+
   #header-container
     width 30%
     float left
@@ -79,6 +89,7 @@ li
     opacity 0.5s linear
   transform skewX(skewAngle)
   width 200%
+  height 100%
   position relative
   top 0
   left -200%
@@ -105,7 +116,8 @@ li
     color white
     height 93%
     top 7%
-    padding 2.5% 5%
+    padding 1% 5% 2.5% 5%
+    overflow-y scroll
 
 .vertical-align-container
   height 100%
@@ -148,6 +160,7 @@ li
 
   &.right
     position absolute
+    overflow-y hidden
     #veil
       transition opacity 0.5s linear,
         background-color 0.5s linear
@@ -233,6 +246,7 @@ li
   height 100%
   width 50%
 
+
 .slant-tab
   transition left 0.5s ease-out
   //border 1px solid white
@@ -300,6 +314,12 @@ a
 
   &:hover
     color white
+
+a.void
+  pointer-events none
+  position relative
+  left -1000px
+  cursor default
 
 .citation
   vertical-align super

@@ -10,8 +10,8 @@ block content
       #tab-content
         .container 
     else
-      #tab-content(data-0-top='background-color:rgb(0,0,0);', data-100-center-center='background-color:rgb(255,255,255);').active
-        .container(data-0='color:rgb(255,255,255);', data-100='color:rgb(0,0,0);').active
+      #tab-content.active
+        .container.active
           !{tabContent}
   #slant(class=inHomeState? "home" : "")
     .slant-container.left
@@ -56,9 +56,9 @@ mixin slantTab(name, contents)
   - var link = '/' + name
   if tabState === name
     a.slant-link(href=link)
-      .slant-tab(data-link=name, data-0='background-color:rgb(0,0,0);', data-10p='background-color:rgb(255,255,255);', class=tabClass)
+      .slant-tab(class=tabClass)
         .vertical-align-container.slant-tab-container
-          .vertical-align-content.slant-tab-content(data-0='color:rgb(255,255,255);', data-10p='color:rgb(0,0,0);')
+          .vertical-align-content.slant-tab-content
             each content in contents
               if content.charAt(0) === '<'
                 !{content}
@@ -67,7 +67,7 @@ mixin slantTab(name, contents)
                 = content.substring(1, content.length) + ' '
   else
     a.slant-link(href=link)
-      .slant-tab(data-link=name, class=tabClass)
+      .slant-tab(class=tabClass)
         .vertical-align-container.slant-tab-container
           .vertical-align-content.slant-tab-content
             each content in contents
